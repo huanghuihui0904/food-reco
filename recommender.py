@@ -36,30 +36,37 @@ class NotionSync:
             #     dates = [data_json["results"][i]["properties"]["Date"]["date"]["start"]
             #                         for i in range(len(data_json["results"]))]
             if p == 'Name':
-                # projects_data = []
                 projects_data['Name'] = [data_json["results"][i]["properties"]['Name']['title']
                                     for i in range(len(data_json["results"]))]
                 
             if p == 'URL':
-                # projects_data = []
                 projects_data['URL'] = [data_json["results"][i]["properties"]['URL']['url']
                                     for i in range(len(data_json["results"]))]
                 
             if p == 'Status':
-                # projects_data = []
-                ic(data_json["results"][0]["properties"]['Status'])
                 projects_data['Status'] = [data_json["results"][i]["properties"]['Status']['status']['name']
+                                    for i in range(len(data_json["results"]))]
+                
+            if p == 'Area':
+                # projects_data = []
+                ic(data_json["results"][0]["properties"]['Area'])
+                projects_data['Area'] = [data_json["results"][i]["properties"]['Area']['multi_select']
                                     for i in range(len(data_json["results"]))]
                 
         res['Name'] = [projects_data['Name'][j][0]['plain_text'] for j in range(len(projects_data['Name']))]
         # ic(projects_data['URL'])
         res['URL'] = [projects_data['URL'][j] for j in range(len(projects_data['URL']))]
         res['Status'] = [projects_data['Status'][j] for j in range(len(projects_data['Status']))]
-        # ic(pd.DataFrame(res))
-        return pd.DataFrame(res)
+        
+        temp_area = []
+        for j in range(len(projects_data['Area'])):
+            temp_area.append([projects_data['Area'][j][k]['name'] for k in range(len(projects_data['Area'][j]))])
+        res['Area'] = [','.join(temp_area[j]) for j in range(len(temp_area))]
+        
+        return pd.DataFrame(res).drop(columns='Status')
     
 def get_sample(df, n=5):
-    return df.sample(n)
+    return df.sample(min(n, len(df)))
 
 def get_recommendation(n=5):
     nsync = NotionSync()
@@ -68,3 +75,5 @@ def get_recommendation(n=5):
     print(projects)
     df = nsync.get_projects_data(data,projects)
     return get_sample(df, n=n)
+
+# ic(get_recommendation(30))

@@ -2,4 +2,7 @@ import streamlit as st
 from recommender import get_recommendation
 
 st.write('Hello Food!')
-st.dataframe(get_recommendation(3))
+
+number = st.number_input('Number to show')
+if st.button('Show where to eat'):
+    st.dataframe(get_recommendation(number))
