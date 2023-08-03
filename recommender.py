@@ -29,12 +29,6 @@ class NotionSync:
         res = {}
         projects_data = {}
         for p in projects:
-            # if p!="Name" and p !="Date":
-            #     projects_data[p] = [data_json["results"][i]["properties"][p]["checkbox"]
-            #                         for i in range(len(data_json["results"]))]
-            # elif p=="Date":
-            #     dates = [data_json["results"][i]["properties"]["Date"]["date"]["start"]
-            #                         for i in range(len(data_json["results"]))]
             if p == 'Name':
                 projects_data['Name'] = [data_json["results"][i]["properties"]['Name']['title']
                                     for i in range(len(data_json["results"]))]
@@ -48,20 +42,32 @@ class NotionSync:
                                     for i in range(len(data_json["results"]))]
                 
             if p == 'Area':
-                # projects_data = []
-                ic(data_json["results"][0]["properties"]['Area'])
                 projects_data['Area'] = [data_json["results"][i]["properties"]['Area']['multi_select']
                                     for i in range(len(data_json["results"]))]
                 
+            if p == 'Notes':
+                # ic(data_json["results"][0]["properties"]['Notes'])
+                projects_data['Notes'] = [data_json["results"][i]["properties"]['Notes']['rich_text']
+                                    for i in range(len(data_json["results"]))]
+                
         res['Name'] = [projects_data['Name'][j][0]['plain_text'] for j in range(len(projects_data['Name']))]
-        # ic(projects_data['URL'])
+
+        temp = []
+        for j in range(len(projects_data['Area'])):
+            temp.append([projects_data['Area'][j][k]['name'] for k in range(len(projects_data['Area'][j]))])
+        res['Area'] = [','.join(temp[j]) for j in range(len(temp))]
+
         res['URL'] = [projects_data['URL'][j] for j in range(len(projects_data['URL']))]
+
+        temp = []
+        for j in range(len(projects_data['Notes'])):
+            temp.append([projects_data['Notes'][j][k]['text']['content'] for k in range(len(projects_data['Notes'][j]))])
+        ic(temp)
+        res['Notes'] = [','.join(temp[j]) for j in range(len(temp))]
+
         res['Status'] = [projects_data['Status'][j] for j in range(len(projects_data['Status']))]
         
-        temp_area = []
-        for j in range(len(projects_data['Area'])):
-            temp_area.append([projects_data['Area'][j][k]['name'] for k in range(len(projects_data['Area'][j]))])
-        res['Area'] = [','.join(temp_area[j]) for j in range(len(temp_area))]
+        
         
         return pd.DataFrame(res).drop(columns='Status')
     
