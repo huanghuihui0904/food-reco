@@ -55,7 +55,7 @@ class NotionSync:
         temp = []
         for j in range(len(projects_data['Area'])):
             temp.append([projects_data['Area'][j][k]['name'] for k in range(len(projects_data['Area'][j]))])
-        res['Area'] = [','.join(temp[j]) for j in range(len(temp))]
+        res['Area'] = [', '.join(temp[j]) for j in range(len(temp))]
 
         res['URL'] = [projects_data['URL'][j] for j in range(len(projects_data['URL']))]
 
@@ -63,7 +63,7 @@ class NotionSync:
         for j in range(len(projects_data['Notes'])):
             temp.append([projects_data['Notes'][j][k]['text']['content'] for k in range(len(projects_data['Notes'][j]))])
         ic(temp)
-        res['Notes'] = [','.join(temp[j]) for j in range(len(temp))]
+        res['Notes'] = [', '.join(temp[j]) for j in range(len(temp))]
 
         res['Status'] = [projects_data['Status'][j] for j in range(len(projects_data['Status']))]
         
