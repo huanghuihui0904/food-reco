@@ -6,8 +6,6 @@ st.write('Hello Food!')
 col1, col2, col3 = st.columns(3)
 with col1:
     number = st.number_input('Number to show', min_value=1, value=5, step=1)
-
-with col2:
     clicked = st.button('Show where to eat')
 
 if clicked:
