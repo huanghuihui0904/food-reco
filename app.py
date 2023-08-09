@@ -9,6 +9,6 @@ with col1:
     new_place = st.checkbox('New places only')
 
 if st.button('Show places to eat!'):
-    df, total_data = get_recommendation(int(number), new_place=new_place).reset_index(drop=True)
+    df, total_data = get_recommendation(int(number), new_place=new_place)
     st.write(f"Showing {number} places to eat in :flag-sg:! (Total restaurants in DB: {total_data})")
-    st.dataframe(df)
+    st.dataframe(df.reset_index(drop=True))
