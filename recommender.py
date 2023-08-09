@@ -128,7 +128,7 @@ def get_recommendation(n=5, new_place = False):
     else:
         df = df1[df1['Status']=='Backlog']
 
-    return get_sample(df, n=n).drop(columns=['Status'])
+    return get_sample(df, n=n).drop(columns=['Status']), len(df)
 
 # ic(get_recommendation(30))
-print(get_recommendation(new_place=True))
+# print(get_recommendation(new_place=True))
