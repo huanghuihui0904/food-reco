@@ -84,6 +84,10 @@ class NotionSync:
                 projects_data['Area'] = [data_json["results"][i]["properties"]['Area']['multi_select']
                                     for i in range(len(data_json["results"]))]
                 
+            if p == 'Notes':
+                projects_data['Notes'] = [data_json["results"][i]["properties"]['Notes']['rich_text']
+                                    for i in range(len(data_json["results"]))]
+                
         ic(projects_data['Date'][0])
         res['Name'] = [projects_data['Name'][j][0]['plain_text'] for j in range(len(projects_data['Name']))]
         res['Date'] = [projects_data['Date'][j]['date']['start'] for j in range(len(projects_data['Date']))]
@@ -91,6 +95,7 @@ class NotionSync:
         for j in range(len(projects_data['Area'])):
             temp.append([projects_data['Area'][j][k]['name'] for k in range(len(projects_data['Area'][j]))])
         res['Area'] = [', '.join(temp[j]) for j in range(len(temp))]
+        res['Notes'] = [', '.join(temp[j]) for j in range(len(temp))]
 
         return pd.DataFrame(res)
     
@@ -113,6 +118,7 @@ def get_recommendation(n=5, new_place = False):
     
         ic(list(df.columns))
         df['Area'] = df.apply(lambda x: x['Area_x'] if pd.notnull(x['Area_x']) else x['Area_y'], axis=1)
+        df['Notes'] = df.apply(lambda x: x['Notes_x'] if pd.notnull(x['Notes_x']) else x['Notes_y'], axis=1)
 
         COLUMNS = list(df1.columns)
         ic(COLUMNS)
@@ -125,4 +131,4 @@ def get_recommendation(n=5, new_place = False):
     return get_sample(df, n=n).drop(columns=['Status'])
 
 # ic(get_recommendation(30))
-# print(get_recommendation(new_place=True))
+print(get_recommendation(new_place=True))
