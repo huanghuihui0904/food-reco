@@ -3,8 +3,8 @@ import streamlit as st
 from icecream import ic
 import pandas as pd
 
-DATABASE_ID_1 = "bfad3d3f2560497e9e2c60d4790ad2f7" #Want to go
-DATABASE_ID_2 = "9764a07b87724cd8958002017a93df88" #Diary
+DATABASE_ID_1 = "95d59953596a4574b5817f0300e9310f" #Want to go
+DATABASE_ID_2 = "96774819a2324a07b0962fd68d48a219" #Diary
 NOTION_URL = 'https://api.notion.com/v1/databases/'
 
 import requests
@@ -13,7 +13,7 @@ class NotionSync:
     def __init__(self):
         pass    
 
-    def query_databases(self, database_id = DATABASE_ID_1, integration_token= st.secrets["notion_token"]):
+    def query_databases(self, database_id = DATABASE_ID_1, integration_token= st.secrets["secret_Jz7xY1y67hkSdP7KXRw5cd4P6CLPXa9lHaZ7kUUF6Fb"]):
         database_url = NOTION_URL + database_id + "/query"
         response = requests.post(database_url, headers={"Authorization": f"Bearer {integration_token}", "Notion-Version": "2022-06-28"})
         if response.status_code != 200:
